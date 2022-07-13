@@ -27,4 +27,9 @@
 .pListTitles>h1{
     font-size: 18px;
 
+
 }
+.pListTitles>h2{
+    font-size: 14px;
+    font-weight: 300;
+  }

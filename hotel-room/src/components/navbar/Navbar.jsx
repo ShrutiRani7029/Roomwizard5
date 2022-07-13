@@ -1,15 +1,19 @@
 import React from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../components/context/AuthContext";
 import "./navbar.css"
 
 const Navbar = () => {
+  const {user}=useContext(AuthContext);
   return (
     <div className="navbar">
         <div className="navContainer">
         <span className="logo">wiz5ard</span>
-        <div className="navItems">
+        {user ? user.username : (<div className="navItems">
             <button className="navButton">Register</button>
-            <button className="navButton">Sign-In</button>
+            <button className="navButton">Login</button>
         </div>
+        )}
         </div>
         </div>
   )

@@ -11,11 +11,24 @@ import {
   faCircleXmark,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import useFetch from "../../hooks/useFetch";
+import { AuthContext } from "../../components/context/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Hotel = () => {
+import Reserve from "../../components/reserve/Reserve";
+
+const Hotel = ({item}) => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const { data, loading, error } = useFetch(`/hotels/find/${id}`)
+  const{user}=useContext(AuthContext)
+  console.log(user);
+  const navigate=useNavigate()
   const photos = [
     {
       src:
@@ -62,6 +75,15 @@ const Hotel = () => {
     setSlideNumber(newSlideNumber);
   };
 
+  const handleClick = () =>{
+    if(user){setOpenModal(true);
+
+    }else{
+      navigate("/login");
+      console.log(user);
+    }
+  }
+
   return (
     <div>
       <Navbar />
@@ -91,7 +113,7 @@ const Hotel = () => {
         )}
         <div className="hotelWrapper">
           <button className="bookNow">Reserve or Book Now!</button>
-          <h1 className="hotelTitle">Paradise Inn</h1>
+          <h1 className="hotelTitle">{data.name}</h1>
           <div className="hotelAddress">
             <FontAwesomeIcon icon={faLocationDot} />
             <span>FGHK HJKKL</span>
@@ -146,13 +168,14 @@ const Hotel = () => {
               <h2>
                 <b>$1000</b>
               </h2>
-              <button>Reserve or Book Now!</button>
+              <button onClick={handleClick}>Reserve or Book Now!</button>
             </div>
           </div>
         </div>
-        <MailList />
+        <MailList/>
         <Footer />
       </div>
+      <Reserve setOpen={setOpenModal} hotelId={id}/>
     </div>
   );
 };

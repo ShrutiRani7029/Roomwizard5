@@ -29,6 +29,8 @@ const Header = ({type}) => {
       key: 'selection'
     }
   ]);
+
+  
   
   return (
     <div className="header">
